@@ -22,9 +22,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     // 🔗 Relasi ke Produksi
     public function produksis()
