@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\StokLog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProduksiDetail extends Model
@@ -27,10 +28,27 @@ class ProduksiDetail extends Model
     }
 
     // 🔥 Kurangi stok otomatis saat bahan dipakai
-    protected static function booted()
-    {
-        static::created(function ($detail) {
-            $detail->bahanBaku->decrement('stok', $detail->jumlah_digunakan);
-        });
-    }
+   protected static function booted()
+{
+    static::created(function ($detail) {
+
+        $bahan = $detail->bahanBaku;
+
+        $stokSebelum = $bahan->stok;
+
+        $bahan->decrement('stok', $detail->jumlah_digunakan);
+
+        $stokSesudah = $bahan->fresh()->stok;
+
+        StokLog::create([
+            'bahan_baku_id' => $bahan->id,
+            'user_id' => auth()->id(),
+            'jenis' => 'keluar',
+            'jumlah' => $detail->jumlah_digunakan,
+            'stok_sebelum' => $stokSebelum,
+            'stok_sesudah' => $stokSesudah,
+        ]);
+    });
+}
+
 }
