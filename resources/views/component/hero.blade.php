@@ -14,7 +14,7 @@
                 Produksi Bakso Sapi, Bakso Urat, Bakso Halus & Bakso Frozen
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="/karyawan/login"
+                <a href="/admin"
                    class="bg-white text-red-600 font-semibold px-10 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:bg-gray-100 flex items-center gap-2 text-lg">
                     <i class="fas fa-sign-in-alt"></i> Masuk Sistem
                 </a>

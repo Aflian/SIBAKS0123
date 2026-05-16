@@ -14,8 +14,13 @@ class PesanansTable
     {
         return $table
             ->columns([
+                TextColumn::make('pelanggan.nama')
+                    ->label('Pelanggan')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('nama_pelanggan')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('jenis_bakso')
                     ->searchable(),
                 TextColumn::make('jumlah')

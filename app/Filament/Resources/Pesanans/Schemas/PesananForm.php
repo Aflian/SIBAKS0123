@@ -14,6 +14,11 @@ class PesananForm
     {
         return $schema
             ->components([
+                Select::make('pelanggan_id')
+                    ->label('Pelanggan')
+                    ->relationship('pelanggan', 'nama')
+                    ->searchable()
+                    ->preload(),
                 TextInput::make('nama_pelanggan')
                     ->required(),
                 TextInput::make('jenis_bakso')

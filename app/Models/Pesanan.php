@@ -10,6 +10,7 @@ class Pesanan extends Model
     use HasFactory;
 
     protected $fillable = [
+        'pelanggan_id',
         'nama_pelanggan',
         'jenis_bakso',
         'jumlah',
@@ -24,7 +25,11 @@ class Pesanan extends Model
         'tanggal_ambil' => 'date',
     ];
 
-    // 🔗 Relasi ke Produksi
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class);
+    }
+
     public function produksi()
     {
         return $this->hasOne(Produksi::class);

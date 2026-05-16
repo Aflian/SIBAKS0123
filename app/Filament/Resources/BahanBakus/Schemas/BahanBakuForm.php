@@ -30,12 +30,12 @@ class BahanBakuForm
                             ->maxLength(20),
 
                         TextInput::make('stok')
-                            ->label('Stok Awal')
+                            ->label('Stok Tersedia')
                             ->required()
                             ->numeric()
                             ->default(0)
                             ->minValue(0)
-                            ->helperText('Masukkan jumlah stok saat ini.'),
+                            ->helperText('Jumlah stok yang tersedia saat ini.'),
 
                         TextInput::make('minimum_stok')
                             ->label('Minimum Stok')

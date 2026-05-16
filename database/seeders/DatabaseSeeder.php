@@ -10,6 +10,9 @@ use App\Models\BahanBaku;
 use App\Models\Pesanan;
 use App\Models\Produksi;
 use App\Models\ProduksiDetail;
+use App\Models\Pemasok;
+use App\Models\Pembelian;
+use App\Models\Pelanggan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $admin = User::create([
             'name' => 'Admin Bakso',
-            'email' => 'admin@bakso.com',
+            'email' => 'admin234@bakso.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
@@ -62,10 +65,57 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // =============================
-        // 3️⃣ PESANAN
+        // 3️⃣ PEMASOK
+        // =============================
+
+        $pemasok1 = Pemasok::create([
+            'nama_toko' => 'Toko Tepung Sejahtera',
+            'alamat' => 'Jl. Industri No. 10, Bangkinang',
+            'nohp' => '081276543210',
+        ]);
+
+        $pemasok2 = Pemasok::create([
+            'nama_toko' => 'Supplier Daging Ayam',
+            'alamat' => 'Jl. Peternakan No. 5, Bangkinang',
+            'nohp' => '081298765432',
+        ]);
+
+        // =============================
+        // 4️⃣ PEMBELIAN (otomatis nambah stok)
+        // =============================
+
+        Pembelian::create([
+            'pemasok_id' => $pemasok1->id,
+            'bahan_baku_id' => $tepung->id,
+            'jumlah' => 10,
+            'tgl_beli' => now(),
+            'harga' => 150000,
+        ]);
+
+        Pembelian::create([
+            'pemasok_id' => $pemasok2->id,
+            'bahan_baku_id' => $daging->id,
+            'jumlah' => 8,
+            'tgl_beli' => now(),
+            'harga' => 320000,
+        ]);
+
+        // =============================
+        // 5️⃣ PELANGGAN
+        // =============================
+
+        $pelanggan = Pelanggan::create([
+            'nama' => 'Andi',
+            'alamat' => 'Bangkinang',
+            'nohp' => '081234567890',
+        ]);
+
+        // =============================
+        // 6️⃣ PESANAN
         // =============================
 
         $pesanan = Pesanan::create([
+            'pelanggan_id' => $pelanggan->id,
             'nama_pelanggan' => 'Andi',
             'jenis_bakso' => 'Bakso Ayam Besar',
             'jumlah' => 100,
@@ -77,7 +127,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // =============================
-        // 4️⃣ PRODUKSI
+        // 7️⃣ PRODUKSI
         // =============================
 
         $produksi = Produksi::create([
@@ -89,7 +139,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // =============================
-        // 5️⃣ PRODUKSI DETAIL
+        // 8️⃣ PRODUKSI DETAIL
         // =============================
 
         ProduksiDetail::create([

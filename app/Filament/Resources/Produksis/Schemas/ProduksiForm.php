@@ -9,6 +9,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 
 use Filament\Forms\Components\Repeater;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 
@@ -85,12 +87,17 @@ class ProduksiForm
                             ->required(),
                     ]),
 
-                Section::make('Keterangan')
+                Section::make('Keterangan & Alamat')
+                    ->columns(2)
                     ->schema([
                         Textarea::make('keterangan')
                             ->rows(3)
-                            ->placeholder('Tambahkan catatan jika diperlukan...')
-                            ->columnSpanFull(),
+                            ->placeholder('Tambahkan catatan jika diperlukan...'),
+
+                        Textarea::make('pesanan.alamat')
+                            ->label('Alamat Pelanggan')
+                            ->rows(3)
+                            ->placeholder('Alamat lengkap pelanggan...'),
                     ]),
             ]);
     }
