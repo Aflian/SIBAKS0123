@@ -4,8 +4,8 @@ namespace App\Filament\Resources\Pesanans\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class PesananForm
@@ -18,9 +18,18 @@ class PesananForm
                     ->label('Pelanggan')
                     ->relationship('pelanggan', 'nama')
                     ->searchable()
-                    ->preload(),
-                TextInput::make('nama_pelanggan')
-                    ->required(),
+                    ->preload()
+                    ->required()
+                    ->createOptionForm([
+                        TextInput::make('nama')
+                            ->label('Nama Pelanggan')
+                            ->required()
+                            ->maxLength(100),
+                        Textarea::make('alamat'),
+                        TextInput::make('nohp')
+                            ->label('No. HP')
+                            ->maxLength(20),
+                    ]),
                 TextInput::make('jenis_bakso')
                     ->required(),
                 TextInput::make('jumlah')
