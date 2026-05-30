@@ -58,9 +58,9 @@
                 </div>
             </div>
             <div class="md:w-1/2 flex justify-center">
-                <img src="https://images.unsplash.com/photo-1687425973269-af0d62587769?w=500&h=400&fit=crop&auto=format"
+                <img src="{{asset('hero.jpeg')}}"
                      alt="Bakso Ayam"
-                     class="w-80 h-64 md:w-96 md:h-72 object-cover rounded-3xl shadow-2xl border-4 border-white/30">
+                     class="w-100 h-64 md:w-100 md:h-72 object-cover rounded-3xl shadow-2xl border-4 border-white/30">
             </div>
         </div>
         <div class="absolute bottom-0 left-0 right-0">
@@ -82,7 +82,7 @@
                 untuk menjaga konsistensi dan kualitas bakso.
             </p>
             <div class="mt-10">
-                <img src="https://images.unsplash.com/photo-1696884422000-0fcd1f115c54?w=800&h=400&fit=crop&auto=format"
+                <img src="{{asset('produk2.jpg')}}"
                      alt="Proses Produksi Bakso"
                      class="w-full max-w-3xl mx-auto rounded-2xl shadow-xl object-cover h-64 md:h-80">
             </div>
@@ -107,7 +107,7 @@
                     <h4 class="font-bold text-xl">COD</h4>
                     <p class="text-gray-500 text-sm">Daerah sekitar</p>
                 </div>
-                
+
             </div>
         </div>
     </section>
@@ -122,7 +122,7 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Card Produk 1 -->
                 <div class="bg-white rounded-3xl shadow-lg overflow-hidden card-hover">
-                    <img src="https://images.unsplash.com/photo-1687425973283-d0d266b73325?w=400&h=200&fit=crop&auto=format"
+                    <img src="{{asset('produk1.jpg')}}"
                          alt="Bakso Ayam 200 gram"
                          class="h-48 w-full object-cover">
                     <div class="p-6">
@@ -135,7 +135,7 @@
                 </div>
                 <!-- Card Produk 2 -->
                 <div class="bg-white rounded-3xl shadow-lg overflow-hidden card-hover">
-                    <img src="https://images.unsplash.com/photo-1747317368514-590dad462536?w=400&h=200&fit=crop&auto=format"
+                    <img src="{{asset('produk3.jpg')}}"
                          alt="Bakso Ayam 500 gram"
                          class="h-48 w-full object-cover">
                     <div class="p-6">
@@ -148,7 +148,7 @@
                 </div>
                 <!-- Card Produk 3 -->
                 <div class="bg-white rounded-3xl shadow-lg overflow-hidden card-hover">
-                    <img src="https://images.unsplash.com/photo-1687426163461-1eeb49c83584?w=400&h=200&fit=crop&auto=format"
+                    <img src="{{asset('produk1.jpg')}}"
                          alt="Bakso Ayam 1 kg"
                          class="h-48 w-full object-cover">
                     <div class="p-6">
@@ -161,7 +161,7 @@
                 </div>
                  <!-- Card Produk 4 -->
                 <div class="bg-white rounded-3xl shadow-lg overflow-hidden card-hover">
-                    <img src="https://images.unsplash.com/photo-1719203368811-0ea5580a06e8?w=400&h=200&fit=crop&auto=format"
+                    <img src="{{asset('produk3.jpg')}}"
                          alt="Bakso Ayam 2 kg"
                          class="h-48 w-full object-cover">
                     <div class="p-6">
