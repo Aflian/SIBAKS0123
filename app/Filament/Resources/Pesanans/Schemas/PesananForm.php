@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Pesanans\Schemas;
 
+use App\Models\Pelanggan;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 
 class PesananForm
@@ -20,6 +22,19 @@ class PesananForm
                     ->searchable()
                     ->preload()
                     ->required()
+                    ->live()
+                    ->afterStateUpdated(function ($state, Set $set) {
+                        if (! $state) {
+                            $set('alamat', null);
+                            $set('no_hp', null);
+                            return;
+                        }
+                        $pelanggan = Pelanggan::find($state);
+                        if ($pelanggan) {
+                            $set('alamat', $pelanggan->alamat);
+                            $set('no_hp', $pelanggan->nohp);
+                        }
+                    })
                     ->createOptionForm([
                         TextInput::make('nama')
                             ->label('Nama Pelanggan')
@@ -35,6 +50,9 @@ class PesananForm
                 TextInput::make('jumlah')
                     ->required()
                     ->numeric(),
+                TextInput::make('harga')
+                    ->numeric()
+                    ->prefix('Rp'),
                 Textarea::make('alamat')
                     ->columnSpanFull(),
                 TextInput::make('no_hp'),

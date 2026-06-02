@@ -14,6 +14,7 @@ class Pesanan extends Model
         'nama_pelanggan',
         'jenis_bakso',
         'jumlah',
+        'harga',
         'alamat',
         'no_hp',
         'tanggal_ambil',
@@ -23,6 +24,7 @@ class Pesanan extends Model
 
     protected $casts = [
         'tanggal_ambil' => 'date',
+        'harga' => 'decimal:2',
     ];
 
     public function pelanggan()
