@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\BahanBakus\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 
@@ -24,9 +25,18 @@ class BahanBakuForm
                             ->maxLength(100)
                             ->autofocus(),
 
+                        Select::make('jenis')
+                            ->label('Jenis Bahan')
+                            ->options([
+                                'bahan_utama' => 'Bahan Utama',
+                                'bumbu' => 'Bumbu',
+                            ])
+                            ->default('bahan_utama')
+                            ->required(),
+
                         TextInput::make('satuan')
                             ->label('Satuan')
-                            ->placeholder('Contoh: kg, gram, liter')
+                            ->placeholder('Contoh: gram, butir, liter')
                             ->maxLength(20),
 
                         TextInput::make('stok')

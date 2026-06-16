@@ -45,9 +45,13 @@ class PesananForm
                             ->label('No. HP')
                             ->maxLength(20),
                     ]),
-                TextInput::make('jenis_bakso')
+                Select::make('satuan')
+                    ->label('Satuan')
+                    ->options(['pcs' => 'Pcs (200gr)', 'kg' => 'Kg (1000gr)'])
+                    ->default('pcs')
                     ->required(),
                 TextInput::make('jumlah')
+                    ->label('Jumlah')
                     ->required()
                     ->numeric(),
                 TextInput::make('harga')

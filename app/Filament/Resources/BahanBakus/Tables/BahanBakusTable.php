@@ -25,6 +25,16 @@ class BahanBakusTable
                     ->sortable()
                     ->weight('bold'),
 
+                TextColumn::make('jenis')
+                    ->label('Jenis')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => match ($state) {
+                        'bahan_utama' => 'Bahan Utama',
+                        'bumbu' => 'Bumbu',
+                        default => $state,
+                    })
+                    ->color(fn ($state) => $state === 'bahan_utama' ? 'primary' : 'success'),
+
                 TextColumn::make('stok')
                     ->label('Stok Saat Ini')
                     ->numeric()

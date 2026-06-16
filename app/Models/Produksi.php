@@ -10,10 +10,10 @@ class Produksi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pesanan_id',
         'user_id',
         'tanggal_produksi',
         'jumlah_produksi',
+        'total_berat',
         'keterangan',
     ];
 
@@ -21,10 +21,9 @@ class Produksi extends Model
         'tanggal_produksi' => 'date',
     ];
 
-    // 🔗 Relasi
-    public function pesanan()
+    public function pesanans()
     {
-        return $this->belongsTo(Pesanan::class);
+        return $this->belongsToMany(Pesanan::class, 'produksi_pesanan');
     }
 
     public function user()
@@ -37,13 +36,16 @@ class Produksi extends Model
         return $this->hasMany(ProduksiDetail::class);
     }
 
-    // 🔥 Auto update status pesanan saat produksi dibuat
     protected static function booted()
     {
         static::created(function ($produksi) {
-            $produksi->pesanan->update([
-                'status_produksi' => 'diproduksi'
-            ]);
+            if ($produksi->pesanans()->exists()) {
+                $produksi->pesanans()->each(function ($pesanan) {
+                    if ($pesanan->status_produksi === 'menunggu') {
+                        $pesanan->update(['status_produksi' => 'diproduksi']);
+                    }
+                });
+            }
         });
     }
 }

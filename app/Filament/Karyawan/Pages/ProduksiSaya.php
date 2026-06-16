@@ -10,30 +10,33 @@ use Filament\Notifications\Notification;
 
 class ProduksiSaya extends Page
 {
-    protected  string $view = 'filament.karyawan.pages.produksi-saya';
+    protected string $view = 'filament.karyawan.pages.produksi-saya';
 
     protected static ?string $navigationLabel = 'Produksi Saya';
 
     public $bahan_id = null;
     public $jumlah = null;
 
-    /*
-    |--------------------------------------------------------------------------
-    | SELESAIKAN PRODUKSI
-    |--------------------------------------------------------------------------
-    */
     public function selesaikan($id)
     {
         $produksi = Produksi::where('user_id', auth()->id())
             ->findOrFail($id);
 
-        if ($produksi->pesanan->status_produksi !== 'diproduksi') {
+        $selesai = true;
+        foreach ($produksi->pesanans as $pesanan) {
+            if ($pesanan->status_produksi !== 'diproduksi') {
+                $selesai = false;
+                break;
+            }
+        }
+
+        if (!$selesai) {
             return;
         }
 
-        $produksi->pesanan->update([
-            'status_produksi' => 'selesai'
-        ]);
+        foreach ($produksi->pesanans as $pesanan) {
+            $pesanan->update(['status_produksi' => 'selesai']);
+        }
 
         Notification::make()
             ->title('Produksi berhasil diselesaikan')
@@ -41,14 +44,8 @@ class ProduksiSaya extends Page
             ->send();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | TAMBAH BAHAN
-    |--------------------------------------------------------------------------
-    */
     public function tambahBahan($produksiId)
     {
-        // Validasi input kosong
         if (!$this->bahan_id || !$this->jumlah) {
             Notification::make()
                 ->title('Bahan dan jumlah wajib diisi')
@@ -70,7 +67,6 @@ class ProduksiSaya extends Page
 
         $bahan = BahanBaku::findOrFail($this->bahan_id);
 
-        // Validasi stok
         if ($this->jumlah > $bahan->stok) {
             Notification::make()
                 ->title('Stok tidak mencukupi')
@@ -94,11 +90,6 @@ class ProduksiSaya extends Page
         $this->reset(['bahan_id', 'jumlah']);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | GETTER UNTUK STOK REACTIVE
-    |--------------------------------------------------------------------------
-    */
     public function getStokBahanProperty()
     {
         if (!$this->bahan_id) {

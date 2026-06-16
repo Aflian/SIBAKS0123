@@ -22,14 +22,13 @@ class PesanansTable
                     ->label('Pelanggan')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('nama_pelanggan')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('jenis_bakso')
-                    ->searchable(),
                 TextColumn::make('jumlah')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('satuan')
+                    ->badge()
+                    ->color(fn ($state) => $state === 'kg' ? 'info' : 'success')
+                    ->formatStateUsing(fn ($state) => $state === 'kg' ? 'Kg' : 'Pcs (200gr)'),
                 TextColumn::make('harga')
                     ->numeric(thousandsSeparator: '.')
                     ->prefix('Rp ')

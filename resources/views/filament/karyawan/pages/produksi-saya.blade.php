@@ -3,8 +3,8 @@
 
         @php
             $produksis = \App\Models\Produksi::where('user_id', auth()->id())
-                ->whereHas('pesanan', fn ($q) => $q->where('status_produksi', 'diproduksi'))
-                ->with(['pesanan', 'produksiDetails.bahanBaku'])
+                ->whereHas('pesanans', fn ($q) => $q->where('status_produksi', 'diproduksi'))
+                ->with(['pesanans.pelanggan', 'produksiDetails.bahanBaku'])
                 ->get();
         @endphp
 
@@ -16,12 +16,20 @@
                 <div class="px-8 py-6 flex justify-between items-start bg-gradient-to-r from-gray-50 to-white">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">
-                            {{ $produksi->pesanan->nama_pelanggan }}
+                            Batch Produksi #{{ $produksi->id }}
                         </h2>
                         <p class="text-gray-500 mt-1">
-                            {{ $produksi->pesanan->jenis_bakso }}
-                            • {{ $produksi->jumlah_produksi }} pcs
+                            {{ $produksi->pesanans->count() }} pesanan
+                            • {{ number_format($produksi->jumlah_produksi) }} pcs
+                            • {{ number_format($produksi->total_berat) }} gr
                         </p>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            @foreach($produksi->pesanans as $pesanan)
+                                <span class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                                    {{ $pesanan->pelanggan?->nama }} ({{ number_format($pesanan->jumlah) }} {{ $pesanan->satuan }})
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
 
                     <span class="px-4 py-1 text-sm font-semibold bg-yellow-100 text-yellow-700 rounded-full">
@@ -59,7 +67,7 @@
                                                 <option value="">Pilih Bahan</option>
                                                 @foreach(\App\Models\BahanBaku::all() as $bahan)
                                                     <option value="{{ $bahan->id }}">
-                                                        {{ $bahan->nama_bahan }}
+                                                        {{ $bahan->nama_bahan }} ({{ $bahan->jenis === 'bahan_utama' ? 'Utama' : 'Bumbu' }})
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -68,7 +76,7 @@
                                         <td class="px-6 py-4">
                                             @if($this->stokBahan)
                                                 <span class="font-semibold text-gray-800">
-                                                    {{ $this->stokBahan->stok }}
+                                                    {{ number_format($this->stokBahan->stok) }}
                                                     {{ $this->stokBahan->satuan }}
                                                 </span>
                                             @else
@@ -81,7 +89,7 @@
                                                 wire:model="jumlah"
                                                 min="1"
                                                 class="w-full rounded-xl border-gray-200 focus:border-primary-500 focus:ring-primary-500 shadow-sm"
-                                                placeholder="Masukkan jumlah">
+                                                placeholder="Masukkan jumlah (gram)">
                                         </td>
 
                                         <td class="px-6 py-4 text-center">
@@ -128,7 +136,7 @@
                                                     {{ $detail->bahanBaku->nama_bahan }}
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    {{ $detail->jumlah_digunakan }}
+                                                    {{ number_format($detail->jumlah_digunakan) }}
                                                     {{ $detail->bahanBaku->satuan }}
                                                 </td>
                                                 <td class="px-6 py-4 text-gray-500 text-xs">
@@ -142,8 +150,7 @@
 
                             <div class="flex justify-end">
                                 <div class="bg-gray-50 px-6 py-3 rounded-xl text-sm font-semibold text-gray-700 shadow-sm">
-                                    Total Jenis Bahan:
-                                    {{ $produksi->produksiDetails->count() }}
+                                    Total Jenis Bahan: {{ $produksi->produksiDetails->count() }}
                                 </div>
                             </div>
                         </div>

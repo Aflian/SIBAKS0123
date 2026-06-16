@@ -11,9 +11,8 @@ class Pesanan extends Model
 
     protected $fillable = [
         'pelanggan_id',
-        'nama_pelanggan',
-        'jenis_bakso',
         'jumlah',
+        'satuan',
         'harga',
         'alamat',
         'no_hp',
@@ -32,8 +31,17 @@ class Pesanan extends Model
         return $this->belongsTo(Pelanggan::class);
     }
 
-    public function produksi()
+    public function produksis()
     {
-        return $this->hasOne(Produksi::class);
+        return $this->belongsToMany(Produksi::class, 'produksi_pesanan');
+    }
+
+    public function getBeratTotalGramAttribute(): int
+    {
+        if ($this->satuan === 'kg') {
+            return $this->jumlah * 1000;
+        }
+
+        return $this->jumlah * 200;
     }
 }

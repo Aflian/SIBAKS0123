@@ -20,14 +20,20 @@ class ProduksisTable
 
             ->columns([
 
-                TextColumn::make('pesanan.nama_pelanggan')
+                TextColumn::make('pesanans')
                     ->label('Pelanggan')
-                    ->searchable()
-                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        return $record->pesanans->map(fn ($p) => $p->pelanggan?->nama)->implode(', ');
+                    })
                     ->weight('bold'),
 
-                TextColumn::make('pesanan.jenis_bakso')
-                    ->label('Jenis Bakso')
+                TextColumn::make('pesanans')
+                    ->label('Detail Pesanan')
+                    ->formatStateUsing(function ($record) {
+                        return $record->pesanans->map(fn ($p) =>
+                            number_format($p->jumlah) . ' ' . $p->satuan . ' (' . number_format($p->berat_total_gram) . 'gr)'
+                        )->implode(', ');
+                    })
                     ->badge()
                     ->color('primary'),
 
@@ -50,15 +56,21 @@ class ProduksisTable
                     ->color('info')
                     ->formatStateUsing(fn ($state) => number_format($state) . ' pcs'),
 
-                TextColumn::make('pesanan.status_produksi')
+                TextColumn::make('total_berat')
+                    ->label('Total Berat')
+                    ->numeric()
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => number_format($state) . ' gr'),
+
+                TextColumn::make('status_produksi')
                     ->label('Status')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
-                        'menunggu' => 'warning',
-                        'diproduksi' => 'primary',
-                        'selesai' => 'success',
-                        default => 'gray',
-                    }),
+                    ->color(fn ($record) => match (true) {
+                        $record->pesanans->contains(fn ($p) => $p->status_produksi === 'selesai') => 'success',
+                        $record->pesanans->contains(fn ($p) => $p->status_produksi === 'diproduksi') => 'primary',
+                        default => 'warning',
+                    })
+                    ->getStateUsing(fn ($record) => $record->pesanans->first()?->status_produksi ?? '-'),
 
                 TextColumn::make('created_at')
                     ->label('Dibuat')
